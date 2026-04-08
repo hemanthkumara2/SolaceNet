@@ -1,10 +1,10 @@
-import OpenAI  from "openai";
+import OpenAI from "openai";
 
-const openai = new OpenAI({apiKey:"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"});
+const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
-export const POST = async (req,res) => {
+export const POST = async (req, res) => {
 
-    const body = await req.json();
+  const body = await req.json();
   try {
     console.log(body);
     let messages = [
@@ -18,10 +18,10 @@ export const POST = async (req,res) => {
     messages.push({ role: "user", content: body.prompt });
 
     const completion = await openai.chat.completions.create({
-        messages: messages,
-        model: "gpt-3.5-turbo",
-      });
-      return new Response(JSON.stringify(completion), { status: 200 });
+      messages: messages,
+      model: "gpt-3.5-turbo",
+    });
+    return new Response(JSON.stringify(completion), { status: 200 });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ error: "Internal server error" });
